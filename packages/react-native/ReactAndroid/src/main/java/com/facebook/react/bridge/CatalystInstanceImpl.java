@@ -344,7 +344,7 @@ public class CatalystInstanceImpl implements CatalystInstance {
           if (mFabricUIManager != null) {
             mFabricUIManager.invalidate();
           }
-          boolean wasIdle = (mPendingJSCalls.getAndSet(0) == 0);
+          mPendingJSCalls.getAndSet(0);
 
           getReactQueueConfiguration()
               .getJSQueueThread()
@@ -416,9 +416,8 @@ public class CatalystInstanceImpl implements CatalystInstance {
   @Override
   public <T extends NativeModule> boolean hasNativeModule(Class<T> nativeModuleInterface) {
     String moduleName = getNameFromAnnotation(nativeModuleInterface);
-    return getTurboModuleRegistry() != null && getTurboModuleRegistry().hasModule(moduleName)
-        ? true
-        : mNativeModuleRegistry.hasModule(moduleName);
+    return (getTurboModuleRegistry() != null && getTurboModuleRegistry().hasModule(moduleName))
+        || mNativeModuleRegistry.hasModule(moduleName);
   }
 
   @Override
